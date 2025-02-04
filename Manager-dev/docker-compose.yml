@@ -1,0 +1,48 @@
+services:
+  dozzle:
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/config:/data
+    ports:
+      - 8080:8080 # Don't forget to add rule to firewall
+    restart: unless-stopped
+    environment:
+      DOZZLE_AUTH_PROVIDER: simple
+      DOZZLE_FILTER: label=group=fmanager
+    labels:
+      - group=fmanager
+      - dev.dozzle.name=dozzle
+
+  db:
+    image: postgres:17.0
+    restart: always
+    env_file:
+      - ~/config/.env
+    volumes:
+      - pgdata_fmanager:/var/lib/postgresql/data
+    ports:
+      - 5441:5432 # Don't forget to add rule to firewall
+    depends_on:
+      - dozzle
+    labels:
+      - group=fmanager
+      - dev.dozzle.name=database
+
+  bot:
+    image: fmanager_bot:latest
+    build:
+      context: .
+    env_file:
+      - ~/config/.env
+    volumes:
+      - ~/logs:/app/logs
+    restart: unless-stopped
+    depends_on:
+      - db
+    labels:
+      - group=fmanager
+      - dev.dozzle.name=bot
+
+volumes:
+  pgdata_fmanager:

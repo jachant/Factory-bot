@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "factorymanager"
+version = "0.1.0"
+description = "Python bot for optimisation workers managing"
+authors = ["Shon Qwezon <shonzbso@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+aiogram = "^3.13.1"
+sqlalchemy = "^2.0.36"
+asyncpg = "^0.30.0"
+yadisk = "^3.1.0"
+httpx = "^0.27.2"
+xlsxwriter = "^3.2.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
+isort = "^5.13.2"
+flake8 = "^7.1.1"
+pre-commit = "^4.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 99
+
+[tool.isort]
+profile = "black"
